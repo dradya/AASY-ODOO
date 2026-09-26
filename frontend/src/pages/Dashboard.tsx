@@ -1,0 +1,23 @@
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { ArrowDownLeft, ArrowRight, ArrowUpRight, Boxes, CircleAlert, ClipboardCheck, Clock3, PackageX, Truck, Warehouse } from 'lucide-react'
+import { api, watchTables } from '../services'
+import type { Dashboard } from '../types'
+import { Badge, Card, Empty } from '../components/ui'
+
+const metrics = [
+  ['products','Products in stock',Boxes], ['low','Low stock items',CircleAlert], ['out','Out of stock',PackageX],
+  ['pending_receipts','Pending receipts',ClipboardCheck], ['pending_deliveries','Pending deliveries',Truck], ['transfers','Scheduled transfers',Warehouse],
+] as const
+function count(rows: Record<string, unknown>[], status: string) { return rows.filter(r => r.status === status).length }
+export default function DashboardPage() {
+  const [data, setData] = useState<Dashboard | null>(null), [error, setError] = useState('')
+  useEffect(() => { let alive = true; const load = () => api<Dashboard>('/dashboard').then(v => { if (alive) setData(v) }).catch(e => { if (alive) setError(e.message) }); load(); const stop=watchTables(['products','inventory','receipts','deliveries','transfers','stock_movements'],load); const timer = window.setInterval(load, 8000); return () => { alive = false; clearInterval(timer); stop() } }, [])
+  return <div className="page dashboard"><div className="page-head"><div><span className="eyebrow">OVERVIEW</span><h1>Inventory overview</h1><p>Everything moving through your workspace, at a glance.</p></div><Link to="/receipts/new" className="btn btn-primary">+ New receipt</Link></div>
+    {error && <div className="alert error">{error}</div>}{!data ? <div className="loading-card">Loading inventory data…</div> : <>
+      <div className="metric-grid">{metrics.map(([key, name, Icon], i) => <Card key={key} className="metric"><div className={`metric-icon tone-${i}`}><Icon size={20}/></div><div className="metric-number">{data.kpis[key] ?? 0}</div><div className="metric-label">{name}</div></Card>)}</div>
+      <div className="section-title"><div><span className="eyebrow">DAILY OPERATIONS</span><h2>What needs attention</h2></div><span className="section-note"><Clock3 size={15}/> Updates every few seconds</span></div>
+      <div className="ops-grid">{([['receipts','Receipts','Incoming stock',ArrowDownLeft],['deliveries','Deliveries','Outgoing stock',ArrowUpRight]] as const).map(([key,title,subtitle,Icon]) => <Card className="operation-card" key={key}><div className="operation-card-head"><div className="operation-icon"><Icon size={22}/></div><span className="operation-tag">{key === 'receipts' ? 'INBOUND' : 'OUTBOUND'}</span></div><h3>{title}</h3><p>{subtitle}</p><div className="operation-stats"><div><strong>{data.kpis[key === 'receipts' ? 'pending_receipts' : 'pending_deliveries']}</strong><span>To {key === 'receipts' ? 'receive' : 'deliver'}</span></div><div><strong>{count(data[key], 'waiting')}</strong><span>Waiting</span></div><div><strong>{count(data[key], 'ready')}</strong><span>Ready</span></div><div><strong>{data[key].filter(r => ['waiting','ready'].includes(String(r.status)) && String(r.scheduled_date) < new Date().toISOString().slice(0,10)).length}</strong><span>Late</span></div></div><Link className="operation-link" to={`/${key}`}>View {title.toLowerCase()} <ArrowRight size={16}/></Link></Card>)}</div>
+      <div className="bottom-grid"><Card className="list-panel"><div className="panel-heading"><div><span className="eyebrow">ACTIVITY</span><h3>Recent movements</h3></div><Link to="/moves">View all <ArrowRight size={15}/></Link></div>{data.movements.length ? data.movements.map(m => <div className="activity" key={String(m.id)}><span className={`activity-dot ${m.movement_type}`}/><div><strong>{String(m.reference)}</strong><small>{String(m.movement_type)} · {new Date(String(m.created_at)).toLocaleDateString()}</small></div><span>{Number(m.quantity).toLocaleString()} units</span></div>) : <Empty message="Movements will appear after a completed operation."/>}</Card><Card className="list-panel"><div className="panel-heading"><div><span className="eyebrow">STOCK HEALTH</span><h3>Low stock products</h3></div><Link to="/stock">View stock <ArrowRight size={15}/></Link></div>{data.low_stock.length ? data.low_stock.map(p => <div className="activity" key={String(p.id)}><span className="product-initial">{String(p.name).charAt(0)}</span><div><strong>{String(p.name)}</strong><small>Reorder level: {Number(p.reorder_level)}</small></div><Badge status="waiting">{Number(p.quantity)} left</Badge></div>) : <Empty message="All stocked products are above their reorder levels."/>}</Card></div>
+    </>}</div>
+}
