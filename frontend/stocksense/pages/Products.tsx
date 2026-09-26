@@ -238,7 +238,7 @@ export default function Products() {
     <div className="flex flex-col h-full space-y-6 animate-in">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Products</h1>
+          <h1 className="font-heading text-2xl font-bold tracking-tight text-foreground">Products</h1>
           <p className="text-muted-foreground mt-1 text-sm">Manage your product inventory</p>
         </div>
         <Button onClick={handleOpenAdd}>

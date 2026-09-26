@@ -34,7 +34,7 @@ export const Dashboard = () => {
   return (
     <div className="space-y-6 animate-in">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">Dashboard</h1>
+        <h1 className="font-heading text-2xl font-bold tracking-tight text-foreground">Dashboard</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           A snapshot of stock levels and warehouse activity across your sites.
         </p>
@@ -50,6 +50,7 @@ export const Dashboard = () => {
           trendValue="4.2%"
           iconColor="text-primary"
           iconBgColor="bg-primary/10"
+          accentClassName="bg-primary"
         />
         <StatCard
           title="Low Stock"
@@ -59,6 +60,7 @@ export const Dashboard = () => {
           trendValue="1.1%"
           iconColor="text-amber-600"
           iconBgColor="bg-amber-100"
+          accentClassName="bg-amber-500"
         />
         <StatCard
           title="Out of Stock"
@@ -68,6 +70,7 @@ export const Dashboard = () => {
           trendValue="No change"
           iconColor="text-red-600"
           iconBgColor="bg-red-100"
+          accentClassName="bg-red-500"
         />
         <StatCard
           title="Pending Receipts"
@@ -75,6 +78,7 @@ export const Dashboard = () => {
           icon={Clock}
           iconColor="text-purple-600"
           iconBgColor="bg-purple-100"
+          accentClassName="bg-purple-500"
         />
         <StatCard
           title="Pending Deliveries"
@@ -82,6 +86,7 @@ export const Dashboard = () => {
           icon={Truck}
           iconColor="text-indigo-600"
           iconBgColor="bg-indigo-100"
+          accentClassName="bg-indigo-500"
         />
         <StatCard
           title="Scheduled Transfers"
@@ -89,6 +94,7 @@ export const Dashboard = () => {
           icon={ArrowLeftRight}
           iconColor="text-teal-600"
           iconBgColor="bg-teal-100"
+          accentClassName="bg-teal-500"
         />
       </div>
 

@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.1.1",
+    "@fontsource/plus-jakarta-sans": "^5.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.469.0",

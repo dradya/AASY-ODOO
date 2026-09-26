@@ -56,10 +56,10 @@ const SidebarContent = ({ onClick }: { onClick?: () => void }) => {
   return (
     <div className="flex h-full w-full flex-col bg-sidebar text-sidebar-foreground">
       <div className="flex h-16 shrink-0 items-center gap-2.5 px-6 border-b border-sidebar-border">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sidebar-primary">
-          <Boxes className="h-4.5 w-4.5 text-sidebar-primary-foreground" />
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg brand-gradient shadow-lg shadow-primary/30">
+          <Boxes className="h-4.5 w-4.5 text-white" />
         </div>
-        <span className="text-lg font-bold tracking-tight text-white">StockSense</span>
+        <span className="font-heading text-lg font-bold tracking-tight text-white">StockSense</span>
       </div>
 
       <div className="flex-1 overflow-y-auto py-5 scrollbar-thin">

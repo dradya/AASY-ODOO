@@ -26,7 +26,7 @@ export default function Header({ title, onMenuClick }: HeaderProps) {
       <div className="h-6 w-px bg-border lg:hidden" aria-hidden="true" />
 
       <div className="flex flex-1 items-center justify-between gap-x-4">
-        <h1 className="text-xl font-semibold text-foreground truncate">{title}</h1>
+        <h1 className="font-heading text-xl font-bold text-foreground truncate">{title}</h1>
 
         <div className="flex items-center gap-x-3 sm:gap-x-4">
           <div className="hidden md:flex relative w-64">
