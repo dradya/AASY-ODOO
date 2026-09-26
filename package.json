@@ -1,6 +1,11 @@
 {
   "dependencies": {
+    "@supabase/supabase-js": "^2.117.2",
     "@tailwindcss/cli": "^4.3.3",
+    "autoprefixer": "^10.6.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.48.0",
+    "postcss": "^8.5.28",
     "react-router-dom": "^7.18.4",
     "tailwindcss": "^4.3.3"
   }
