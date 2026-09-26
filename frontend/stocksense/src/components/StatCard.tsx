@@ -1,17 +1,17 @@
-import type { LucideIcon } from 'lucide-react';
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
-import { Card, CardContent } from './ui/card';
 import { cn } from '../lib/utils';
+import { Card, CardContent } from './ui/card';
+import { ArrowDownIcon, ArrowUpIcon } from 'lucide-react';
 
 interface StatCardProps {
   title: string;
-  value: number | string;
-  icon: LucideIcon;
-  trend?: 'up' | 'down' | 'neutral';
-  trendValue?: string;
-  iconColor?: string;
-  iconBgColor?: string;
-  accentClassName?: string;
+  value: string;
+  icon: React.ElementType;
+  trend?: {
+    value: number;
+    isPositive: boolean;
+  };
+  description?: string;
+  className?: string;
 }
 
 export default function StatCard({
@@ -19,55 +19,49 @@ export default function StatCard({
   value,
   icon: Icon,
   trend,
-  trendValue,
-  iconColor = 'text-primary',
-  iconBgColor = 'bg-primary/10',
-  accentClassName = 'bg-primary',
+  description,
+  className,
 }: StatCardProps) {
   return (
-    <Card className="relative overflow-hidden border-border/60 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
-      <span className={cn('absolute inset-x-0 top-0 h-1', accentClassName)} />
-      <CardContent className="p-5 pt-6">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground truncate">
+    <Card className={cn("relative overflow-hidden group hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-background/60 backdrop-blur-sm border-border/50", className)}>
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-fuchsia-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <CardContent className="p-6">
+        <div className="flex items-center justify-between">
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
               {title}
             </p>
-            <h3 className="mt-1.5 font-heading text-[1.7rem] leading-none font-bold tracking-tight text-foreground">
-              {value}
-            </h3>
+            <div className="flex items-baseline gap-2">
+              <h2 className="text-3xl font-bold tracking-tight font-heading text-foreground">
+                {value}
+              </h2>
+            </div>
           </div>
-          <div
-            className={cn(
-              'flex h-11 w-11 shrink-0 items-center justify-center rounded-xl',
-              iconBgColor
-            )}
-          >
-            <Icon className={cn('h-5 w-5', iconColor)} />
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300 shadow-inner">
+            <Icon className="h-7 w-7" />
           </div>
         </div>
-
-        {trend && trendValue && (
-          <div className="mt-3.5 flex items-center text-xs">
-            {trend === 'up' && (
-              <span className="inline-flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
-                <TrendingUp className="h-3.5 w-3.5" />
-                {trendValue}
+        
+        {(trend || description) && (
+          <div className="mt-4 flex items-center text-sm">
+            {trend && (
+              <span
+                className={cn(
+                  "flex items-center font-medium px-2 py-0.5 rounded-full",
+                  trend.isPositive ? "text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10 dark:text-emerald-400" : "text-rose-600 bg-rose-50 dark:bg-rose-500/10 dark:text-rose-400"
+                )}
+              >
+                {trend.isPositive ? (
+                  <ArrowUpIcon className="mr-1 h-3.5 w-3.5" />
+                ) : (
+                  <ArrowDownIcon className="mr-1 h-3.5 w-3.5" />
+                )}
+                {Math.abs(trend.value)}%
               </span>
             )}
-            {trend === 'down' && (
-              <span className="inline-flex items-center gap-1 font-semibold text-red-600 dark:text-red-400">
-                <TrendingDown className="h-3.5 w-3.5" />
-                {trendValue}
-              </span>
+            {description && (
+              <span className="ml-2 text-muted-foreground">{description}</span>
             )}
-            {trend === 'neutral' && (
-              <span className="inline-flex items-center gap-1 font-semibold text-muted-foreground">
-                <Minus className="h-3.5 w-3.5" />
-                {trendValue}
-              </span>
-            )}
-            <span className="ml-1.5 text-muted-foreground">vs last month</span>
           </div>
         )}
       </CardContent>

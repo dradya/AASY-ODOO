@@ -1,54 +1,95 @@
-import React from 'react';
-import { Badge } from '../components/ui/badge';
 import { cn } from '../lib/utils';
 
+export type StatusType = 
+  | 'draft' 
+  | 'ready' 
+  | 'done' 
+  | 'cancelled' 
+  | 'in_transit' 
+  | 'pending'
+  | 'active'
+  | 'inactive'
+  | 'low_stock'
+  | 'out_of_stock';
+
 interface StatusBadgeProps {
-  status: string;
+  status: StatusType | string;
+  className?: string;
 }
 
-export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
-  const normalizedStatus = status.toLowerCase();
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'in-stock':
+export default function StatusBadge({ status, className }: StatusBadgeProps) {
+  const getStatusConfig = (s: string) => {
+    switch (s.toLowerCase()) {
       case 'done':
-      case 'completed':
-      case 'validated':
       case 'active':
-        return 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100/80 dark:bg-emerald-500/15 dark:text-emerald-400';
-      case 'low-stock':
-      case 'waiting':
-      case 'picking':
-      case 'packing':
-      case 'in-progress':
+        return {
+          bg: 'bg-emerald-50 dark:bg-emerald-500/10',
+          text: 'text-emerald-700 dark:text-emerald-400',
+          border: 'border-emerald-200/50 dark:border-emerald-500/20',
+          dot: 'bg-emerald-500',
+          label: s,
+        };
+      case 'ready':
+      case 'in_transit':
+        return {
+          bg: 'bg-blue-50 dark:bg-blue-500/10',
+          text: 'text-blue-700 dark:text-blue-400',
+          border: 'border-blue-200/50 dark:border-blue-500/20',
+          dot: 'bg-blue-500',
+          label: s.replace('_', ' '),
+        };
       case 'pending':
       case 'draft':
-        return 'bg-amber-100 text-amber-700 hover:bg-amber-100/80 dark:bg-amber-500/15 dark:text-amber-400';
-      case 'out-of-stock':
-      case 'canceled':
+        return {
+          bg: 'bg-amber-50 dark:bg-amber-500/10',
+          text: 'text-amber-700 dark:text-amber-400',
+          border: 'border-amber-200/50 dark:border-amber-500/20',
+          dot: 'bg-amber-500',
+          label: s,
+        };
+      case 'cancelled':
       case 'inactive':
-        return 'bg-red-100 text-red-700 hover:bg-red-100/80 dark:bg-red-500/15 dark:text-red-400';
-      case 'ready':
-        return 'bg-blue-100 text-blue-700 hover:bg-blue-100/80 dark:bg-blue-500/15 dark:text-blue-400';
+      case 'out_of_stock':
+        return {
+          bg: 'bg-rose-50 dark:bg-rose-500/10',
+          text: 'text-rose-700 dark:text-rose-400',
+          border: 'border-rose-200/50 dark:border-rose-500/20',
+          dot: 'bg-rose-500',
+          label: s.replace(/_/g, ' '),
+        };
+      case 'low_stock':
+        return {
+          bg: 'bg-orange-50 dark:bg-orange-500/10',
+          text: 'text-orange-700 dark:text-orange-400',
+          border: 'border-orange-200/50 dark:border-orange-500/20',
+          dot: 'bg-orange-500',
+          label: s.replace('_', ' '),
+        };
       default:
-        return 'bg-slate-100 text-slate-700 hover:bg-slate-100/80 dark:bg-slate-500/15 dark:text-slate-400';
+        return {
+          bg: 'bg-slate-50 dark:bg-slate-500/10',
+          text: 'text-slate-700 dark:text-slate-400',
+          border: 'border-slate-200/50 dark:border-slate-500/20',
+          dot: 'bg-slate-500',
+          label: s,
+        };
     }
   };
 
-  const formatStatus = (status: string) => {
-    return status
-      .split('-')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };
+  const config = getStatusConfig(status);
 
   return (
-    <Badge
-      variant="outline"
-      className={cn('font-medium border-0', getStatusColor(normalizedStatus))}
+    <span
+      className={cn(
+        'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border transition-colors',
+        config.bg,
+        config.text,
+        config.border,
+        className
+      )}
     >
-      {formatStatus(status)}
-    </Badge>
+      <span className={cn("h-1.5 w-1.5 rounded-full shadow-sm", config.dot)} />
+      <span className="capitalize">{config.label}</span>
+    </span>
   );
-};
+}
