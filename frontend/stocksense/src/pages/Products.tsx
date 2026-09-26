@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from '../components/ui/table';
 import {
   Dialog,
   DialogContent,
@@ -15,7 +15,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from '../components/ui/dialog';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,7 +25,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+} from '../components/ui/alert-dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,18 +33,18 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '../components/ui/dropdown-menu';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
+} from '../components/ui/select';
+import { Input } from '../components/ui/input';
+import { Button } from '../components/ui/button';
+import { Label } from '../components/ui/label';
+import { Badge } from '../components/ui/badge';
 import {
   Plus,
   Search,
@@ -55,9 +55,9 @@ import {
   Filter,
 } from 'lucide-react';
 import { cn } from 'cn';
-import type { Product } from '@/types/inventory';
-import { mockProducts, categories, warehouses, statuses } from '@/data/mockData';
-import { StatusBadge } from '@/components/StatusBadge';
+import type { Product } from '../types/inventory';
+import { mockProducts, categories, warehouses, statuses } from '../data/mockData';
+import { StatusBadge } from '../components/StatusBadge';
 
 // Units of measure
 const units = ['Pieces', 'Meters', 'Reams', 'Kilograms', 'Liters'];

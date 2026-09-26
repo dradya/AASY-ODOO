@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { cn } from 'cn';
+// Fixed import path - adjust this if your utils file is located elsewhere
+import { cn } from '../lib/utils';
 import {
   LayoutDashboard,
   Package,
@@ -14,7 +15,7 @@ import {
   LogOut,
   Box,
 } from 'lucide-react';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { Sheet, SheetContent } from './ui/sheet';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -129,8 +130,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         </SheetContent>
       </Sheet>
 
-      {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex w-72 flex-col fixed inset-y-0 left-0 z-50">
+      {/* Desktop Sidebar: Removed 'fixed inset-y-0 left-0 z-50' and added 'shrink-0' */}
+      <aside className="hidden lg:flex w-72 flex-col shrink-0 border-r border-slate-800 h-full">
         <SidebarContent />
       </aside>
     </>

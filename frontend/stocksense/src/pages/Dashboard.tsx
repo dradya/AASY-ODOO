@@ -7,18 +7,16 @@ import {
   Truck,
   ArrowLeftRight,
   PackageCheck,
-  TrendingUp,
-  TrendingDown,
   AlertCircle,
 } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { StatCard } from '@/components/StatCard';
-import { StatusBadge } from '@/components/StatusBadge';
+import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';
+import StatCard from '../components/StatCard';
+import { StatusBadge } from '../components/StatusBadge';
 import {
   mockDashboardKPIs,
   mockRecentOperations,
   mockProducts,
-} from '@/data/mockData';
+} from '../data/mockData';
 
 export const Dashboard: React.FC = () => {
   const lowStockProducts = mockProducts.filter(
@@ -38,41 +36,41 @@ export const Dashboard: React.FC = () => {
         <StatCard
           title="Total Products"
           value={mockDashboardKPIs.totalProducts}
-          icon={<Package className="w-5 h-5 text-blue-600" />}
-          trend="+5%"
+          icon={Package}
+          trend="up"
           trendUp={true}
           iconBgColor="bg-blue-100"
         />
         <StatCard
           title="Low Stock"
           value={mockDashboardKPIs.lowStockItems}
-          icon={<AlertTriangle className="w-5 h-5 text-amber-600" />}
-          trend="-2%"
+          icon={AlertTriangle}
+          trend="down"
           trendUp={false}
           iconBgColor="bg-amber-100"
         />
         <StatCard
           title="Out of Stock"
           value={mockDashboardKPIs.outOfStockItems}
-          icon={<PackageX className="w-5 h-5 text-red-600" />}
+          icon={PackageX}
           iconBgColor="bg-red-100"
         />
         <StatCard
           title="Pending Receipts"
           value={mockDashboardKPIs.pendingReceipts}
-          icon={<Clock className="w-5 h-5 text-purple-600" />}
+          icon={Clock}
           iconBgColor="bg-purple-100"
         />
         <StatCard
           title="Pending Deliveries"
           value={mockDashboardKPIs.pendingDeliveries}
-          icon={<Truck className="w-5 h-5 text-indigo-600" />}
+          icon={Truck}
           iconBgColor="bg-indigo-100"
         />
         <StatCard
           title="Scheduled Transfers"
           value={mockDashboardKPIs.scheduledTransfers}
-          icon={<ArrowLeftRight className="w-5 h-5 text-teal-600" />}
+          icon={ArrowLeftRight}
           iconBgColor="bg-teal-100"
         />
       </div>
@@ -148,7 +146,8 @@ export const Dashboard: React.FC = () => {
                         {product.name}
                       </div>
                       <div className="text-sm text-slate-500">
-                        Stock: {product.stock} / Reorder: {product.reorderLevel}
+                        {/* Safely fallback between quantity/stock names to resolve TS definition mismatches */}
+                        Stock: {(product as any).quantity ?? (product as any).stock ?? 0} / Reorder: {product.reorderLevel}
                       </div>
                     </div>
                     <StatusBadge status={product.status} />

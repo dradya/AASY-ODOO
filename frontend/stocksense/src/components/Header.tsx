@@ -1,8 +1,8 @@
 import React from 'react';
 import { Menu, Search, Bell } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Input } from './ui/input';
+import { Button } from './ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 // Since mockData might not exist yet, we define a fallback or assume it exists.
 // In a real scenario, this would be imported from '@/data/mockData'
